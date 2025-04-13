@@ -357,7 +357,7 @@
 # 1i = [1,2, 3, 4, 5]
 # for i in li:
 # print (i)
-# iter(:获取可迭代对象的迭代器
+# iter():获取可迭代对象的迭代器
 # next():一个个去取元素,取完元素后会引发一个异常
 # li = [1, 2, 3, 4, 5]
 # 创建迭代器对象
@@ -384,6 +384,144 @@
 #1.iter()调用对象的_iter_(),并把_iter_()方法的返回结果作为自己的返回值
 #2.next()调用对象的_next_(),一个个取元素
 #3.所有元素都取完了,_next_()将引发StopIteration异常
+# 总结
+# 可迭代对象可以通过iter()转换成迭代器对象
+# 如果一个对象拥有_iter_(),是可迭代对象,如果一个对象拥有_next_()和_iter_()方法,是迭代器对象
+# dir():查看对象中的属性和方法
+
+# 迭代器协议
+# 对象必须提供一个next方法,执行该方法要么就返回迭代中的下一项,要么就引发StopIteration异常,来终止迭代
+# 自定义迭代器类
+# 两个特性:__iter__()和__next__()
+
+#自定义可迭代对象
+class MyIterable:
+    def __init__(self):
+        self.data = [1,2,3,4,5]
+    def __iter__(self):
+        return MyIterator(self.data)
+# 自定义迭代器类
+# class MyIterator(object):
+#     def __init__(self,data):
+#         self.datas = data
+#         self.index = 0
+#     def __iter__(self):   #返回的是当前迭代器类的实例对象
+#         return self
+#     def __next__(self):
+#         if self.index< len(self.datas):
+#             result=self.datas[self.index]
+#             self.index += 1
+#             return result
+#         else:
+#             raise StopIteration('终止迭代，数据已经被取完了')
+# mi=MyIterator([1,2,3,4,5])
+# mi2=MyIterable()
+# print(mi)
+# print(mi2)
+# print(mi.__next__())
+# print()
+# for i in mi:
+#     print(i)
+# print()
+# for i in mi2:
+#     print(i)
+# print(MyIterator)
+# print(mi)
+# print(mi.__iter__())
+# print()
+# print(mi.__next__())
+# print()
+# for i in mi:
+#     print(i)
+#生成器
+# Python中一边循环一边计算的机制,叫做生成器
+#表达式：将列表推导式的[]改为()
+# li=[i*5 for i in range(5)]
+# gen=(i*5 for i in range(5))
+# print(li)
+# print(gen)
+# print(next(gen))
+# print(next(gen))
+# print(next(gen))
+# print(next(gen))
+# print(next(gen))
+# print(next(gen))
+#生成器函数：Python中,使用了yield关键字的函数就称之为生成器函数
+# yield的作用:
+# 1.类似return,将指定值或者多个值返回给调用者
+# 2.yield语句一次返回一个结果,在每个结果中间,挂起函数,执行next(),再重新从挂起点继续往下执行
+#  是函数中断,并保存中断的状态
+# li=[]
+# def test():
+#     print('True')
+#     li.append('a')
+#     print('li=',li)
+# test()
+# test()
+# def gen () :
+#     print('开始了')
+#     yield 'a'
+#     yield 'b'
+#     yield 'c'
+# gen_01 = gen()
+# print(gen_01)
+# print(next(gen_01))
+# print(next(gen_01))
+
+# def test_a():
+#     yield 1
+#     yield 2
+#     yield 3
+# print(test_a)
+# print(test_a())
+# ta=test_a()
+# print(ta)
+# print(next(ta)) #从对象中取值
+# print(next(ta))
+# print(next(ta))
+# print(next(test_a())) #加括号是调用函数
+# print(next(test_a()))
+
+#print(函数名/类名/....)返回的是该类型和该类型存在的地址
+#而如果令一个变量i=函数名()/类名()/.... 则print(i)返回的就是以该类型或该类创建的变量及该变量所在位置
+#加括号可以理解为引用，与c语言中的指针差不多
+
+
+#  三者关系
+#可迭代对象:指实现了python迭代协议,可以通过for .. in .. 循环遍历的对象,比如1ist、dict、str ... 、迭代器、生成器
+#迭代器:可以记住自己遍历位置的对象,直观体现就是可以使用next()函数返回值,迭代器只能往前,不能往后,当遍历完毕之后,next()会抛出异常
+#生成器:是特殊的迭代器,需要注意迭代器并不一定是生成器,它是python提供的通过简便的方法写出迭代器的一种手段
+#包含关系:可迭代对象>迭代器>生成器
+
+#字符串操作以及列表转字符串 网址：https://zhuanlan.zhihu.com/p/474884078 ， https://blog.csdn.net/weixin_55144746/article/details/140447421?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522b987579e0100baf8eadc8da074d47bb4%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=b987579e0100baf8eadc8da074d47bb4&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-140447421-null-null.142^v102^pc_search_result_base7&utm_term=%E5%A6%82%E4%BD%95%E5%B0%86%E5%88%97%E8%A1%A8%E6%94%B9%E4%B8%BA%E5%AD%97%E7%AC%A6%E4%B8%B2&spm=1018.2226.3001.4187
+# a=str('abc')
+# print(a)
+# b="'sda'"
+# print(type(a))
+# print(b)
+# print(a+b)
+# print(type(b))
+# a=['sda',123,'sdad',"'sdaf'"]
+# c=" ".join(map(str,a))
+# print(c)
+# list1=['a','b','c',123]
+# list2=[str(i) for i in list1]
+# str1=' '.join(list2)
+# print(str1)
+#  map函数：map(function, iterable)  网址：https://blog.csdn.net/u012856866/article/details/131660354?ops_request_misc=%257B%2522request%255Fid%2522%253A%252285de0aa14c74f4b1c10ff8d4b1f5467c%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=85de0aa14c74f4b1c10ff8d4b1f5467c&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-131660354-null-null.142^v102^pc_search_result_base7&utm_term=map%E5%87%BD%E6%95%B0&spm=1018.2226.3001.4187
+# function：一个函数或方法
+# iterable：一个或多个序列（可迭代对象）
+# map() 函数的作用是：对序列 iterable 中每一个元素调用 function 函数，返回一个map对象实例。这个map对象本质上来讲是一个迭代器。
+
+
+
+
+
+
+
+
+
+
 
 
 
